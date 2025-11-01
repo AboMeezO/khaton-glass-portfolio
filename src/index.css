@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 220 25% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 220 20% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 20% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 280 90% 68%;
+    --primary-foreground: 0 0% 100%;
+    
+    --primary-glow: 280 100% 78%;
+
+    --secondary: 190 95% 55%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --secondary-glow: 190 100% 65%;
+
+    --muted: 220 15% 18%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 270 100% 75%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 85% 62%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 22%;
+    --input: 220 15% 18%;
+    --ring: 280 90% 68%;
+
+    --radius: 1rem;
+
+    /* Glass effect tokens */
+    --glass-bg: 220 18% 12%;
+    --glass-border: 220 20% 28%;
+    
+    /* Gradient tokens */
+    --gradient-start: 280 90% 68%;
+    --gradient-mid: 260 85% 62%;
+    --gradient-end: 190 95% 55%;
+    
+    /* Shadow tokens */
+    --shadow-primary: 280 90% 68% / 0.3;
+    --shadow-secondary: 190 95% 55% / 0.3;
+    --shadow-elegant: 0 10px 40px -10px hsl(280 90% 68% / 0.4);
+    --shadow-glow: 0 0 60px hsl(280 100% 78% / 0.5);
+    
+    /* Animation tokens */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-elastic: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .dark {
+    --background: 220 25% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 220 20% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 20% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 280 90% 68%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 190 95% 55%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 15% 18%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 270 100% 75%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 85% 62%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 22%;
+    --input: 220 15% 18%;
+    --ring: 280 90% 68%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] shadow-xl;
+  }
+  
+  .glass-hover {
+    @apply hover:bg-white/[0.08] hover:border-white/[0.15] hover:shadow-2xl transition-all duration-500;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent;
+  }
+  
+  .gradient-bg {
+    @apply bg-gradient-to-br from-primary/20 via-accent/10 to-secondary/20;
+  }
+  
+  .gradient-border {
+    position: relative;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--secondary)));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  
+  .glow-effect {
+    box-shadow: 0 0 40px hsl(var(--shadow-primary)), 0 0 80px hsl(var(--shadow-secondary));
+  }
+}
