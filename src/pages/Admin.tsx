@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, LogOut, Shield } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { SkillsManager } from "@/components/admin/SkillsManager";
+import { ProjectsManager } from "@/components/admin/ProjectsManager";
 
 const Admin = () => {
   const {
@@ -145,8 +147,6 @@ const Admin = () => {
       </div>
     );
   }
-  console.log("skills", skills);
-  console.log("projects", projects);
   return (
     <div className="min-h-screen py-12 px-6">
       <div className="container mx-auto max-w-6xl">
@@ -262,12 +262,14 @@ const Admin = () => {
           <TabsContent value="skills">
             <Card className="glass">
               <CardHeader>
-                <CardTitle>Manage Skills</CardTitle>
+                <CardTitle>إدارة المهارات</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground text-center py-8">
-                  Skills management interface - Coming soon
-                </p>
+                <SkillsManager 
+                  skills={skills} 
+                  discordUser={discordUser}
+                  onUpdate={loadData}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -275,12 +277,14 @@ const Admin = () => {
           <TabsContent value="projects">
             <Card className="glass">
               <CardHeader>
-                <CardTitle>Manage Projects</CardTitle>
+                <CardTitle>إدارة المشاريع</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground text-center py-8">
-                  Projects management interface - Coming soon
-                </p>
+                <ProjectsManager 
+                  projects={projects}
+                  discordUser={discordUser}
+                  onUpdate={loadData}
+                />
               </CardContent>
             </Card>
           </TabsContent>
