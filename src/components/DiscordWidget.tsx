@@ -1,30 +1,42 @@
 import { useEffect, useState } from "react";
 import { Users, Wifi } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface DiscordData {
   name: string;
   presence_count: number;
-  member_count: number;
+  instant_invite?: string;
+  members: Array<{ id: string }>;
   icon_url?: string;
 }
 
 const DiscordWidget = () => {
   const [discordData, setDiscordData] = useState<DiscordData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [discordServerId, setDiscordServerId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch Discord server data
-    // Note: The actual API endpoint would need CORS enabled or use a proxy
-    const fetchDiscordData = async () => {
+    const fetchServerIdAndData = async () => {
       try {
-        // For demo purposes, using placeholder data
-        // In production, you'd fetch from: https://discord.com/api/guilds/GUILD_ID/widget.json
-        setDiscordData({
-          name: "VAS Community",
-          presence_count: 147,
-          member_count: 1523,
-          icon_url: "https://cdn.discordapp.com/icons/example/example.png",
-        });
+        const { data: settings } = await supabase
+          .from("site_settings")
+          .select("discord_server_id")
+          .single();
+
+        if (settings?.discord_server_id) {
+          setDiscordServerId(settings.discord_server_id);
+          
+          const response = await fetch(
+            `https://discord.com/api/guilds/${settings.discord_server_id}/widget.json`
+          );
+          
+          if (response.ok) {
+            const data = await response.json();
+            setDiscordData(data);
+          } else {
+            console.error("Discord widget not enabled or server ID invalid");
+          }
+        }
       } catch (error) {
         console.error("Failed to fetch Discord data:", error);
       } finally {
@@ -32,7 +44,7 @@ const DiscordWidget = () => {
       }
     };
 
-    fetchDiscordData();
+    fetchServerIdAndData();
   }, []);
 
   if (loading) {
@@ -47,11 +59,18 @@ const DiscordWidget = () => {
     );
   }
 
+  if (!discordServerId || !discordData) {
+    return null;
+  }
+
+  const inviteUrl = discordData.instant_invite || "https://discord.gg/vas";
+  const memberCount = discordData.members?.length || 0;
+
   return (
     <section className="py-16 px-6">
       <div className="container mx-auto max-w-2xl">
         <a 
-          href="https://discord.gg/vas" 
+          href={inviteUrl} 
           target="_blank" 
           rel="noopener noreferrer"
           className="block"
@@ -74,13 +93,13 @@ const DiscordWidget = () => {
                   <div className="flex items-center gap-2">
                     <Wifi className="w-4 h-4 text-green-500" />
                     <span className="text-sm">
-                      {discordData?.presence_count || 0} Online
+                      {discordData.presence_count || 0} Online
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-primary" />
                     <span className="text-sm">
-                      {discordData?.member_count || 0} Members
+                      {memberCount} Members
                     </span>
                   </div>
                 </div>

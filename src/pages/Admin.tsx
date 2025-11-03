@@ -86,6 +86,7 @@ const Admin = () => {
             hero_subtitle: siteSettings.hero_subtitle,
             hero_description: siteSettings.hero_description,
             about_text: siteSettings.about_text,
+            discord_server_id: siteSettings.discord_server_id,
           },
           id: siteSettings.id,
         },
@@ -241,6 +242,25 @@ const Admin = () => {
                         rows={6}
                         className="bg-background/50"
                       />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">
+                        Discord Server ID
+                      </label>
+                      <Input
+                        value={siteSettings.discord_server_id || ""}
+                        onChange={(e) =>
+                          setSiteSettings({
+                            ...siteSettings,
+                            discord_server_id: e.target.value,
+                          })
+                        }
+                        placeholder="Your Discord Server ID"
+                        className="bg-background/50"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Enable Widget in Discord Server Settings → Widget
+                      </p>
                     </div>
                     <Button
                       onClick={saveSettings}
