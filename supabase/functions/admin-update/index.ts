@@ -19,7 +19,7 @@ serve(async (req) => {
     }
 
     const supabaseUrl = Deno.env.get('VITE_SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabaseServiceKey = Deno.env.get('VITE_SUPABASE_PUBLISHABLE_KEY')!;
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
